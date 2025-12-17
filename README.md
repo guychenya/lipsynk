@@ -1,4 +1,4 @@
-## Avatar video generation via Hugging Face Inference API
+## Lipsynk video generation via Hugging Face Inference API
 
 This project demonstrates how to call a **Hugging Face–hosted image-to-video / avatar model**
 from your own backend so users never see the underlying provider.
@@ -12,7 +12,7 @@ All calls go to the Hugging Face **Inference API** (remote GPU, no local model d
 ### 1. Setup
 
 ```bash
-cd hf-avatar-video
+cd lipsynk
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
@@ -79,10 +79,10 @@ Your frontend should call **your** `/generate` endpoint, not Hugging Face direct
 Initialize git and make the first commit:
 
 ```bash
-cd hf-avatar-video
+cd lipsynk
 git init
 git add .
-git commit -m "Initial avatar video HF Inference project"
+git commit -m "Initial lipsynk HF Inference project"
 ```
 
 Create a new repo on GitHub (via the website), then connect and push:
@@ -95,5 +95,7 @@ git push -u origin main
 
 From this point on, you can integrate `api.py` into your backend and keep users fully abstracted
 from the underlying HF/LLM provider.
+
+**Note**: If you had previously set up a virtual environment with the old project name, please re-create it by deleting the `.venv` folder and following the setup instructions again to ensure all paths are updated correctly.
 
 
