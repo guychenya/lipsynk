@@ -20,11 +20,20 @@ pip install -r requirements.txt
 
 ### 2. Configuration
 
-1. Create an account on Hugging Face and generate an **API token** with Inference scope.
-2. Pick a suitable **image-to-video / avatar** model that offers Inference API access
-   (for example, a talking-head or image-to-video model from the Hub).
-3. If using OpenAI, obtain an **API key** from your OpenAI account.
-4. Copy `.env.example` to `.env` and set the following variables:
+To configure the application, you need to set up several environment variables. You can do this by creating a `.env` file in the project root (by copying `.env.example`) and filling in the details, or by exporting them directly in your shell.
+
+Here are the required variables:
+
+-   **`HF_API_TOKEN`**: Your Hugging Face API token.
+    -   **How to obtain**: Create a Hugging Face account and generate a token with 'read' access from your [Hugging Face profile settings](https://huggingface.co/settings/tokens).
+-   **`HF_MODEL_ID`**: The ID of the Hugging Face model you wish to use.
+    -   **How to obtain**: Browse the [Hugging Face Hub](https://huggingface.co/models) for image-to-video or avatar models (e.g., `emilianob/emilianobot-facer-2.0`). The model ID is typically `author/model-name`.
+-   **`OPENAI_API_KEY`**: Your OpenAI API key.
+    -   **How to obtain**: Obtain your API key from your [OpenAI dashboard](https://platform.openai.com/account/api-keys).
+-   **`VIDEO_GENERATION_PROVIDER`**: Specifies which provider to use for video generation.
+    -   **Values**: `HUGGING_FACE` or `OPENAI`.
+
+Example `.env` configuration:
 
 ```bash
 # Required for Hugging Face video generation
@@ -38,7 +47,6 @@ OPENAI_API_KEY=your_openai_api_key_here
 VIDEO_GENERATION_PROVIDER=HUGGING_FACE
 ```
 
-You can also export them directly in your shell instead of using `.env`.
 
 ### 3. CLI usage
 
