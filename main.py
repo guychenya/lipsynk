@@ -16,36 +16,37 @@ def load_config():
     """
     load_dotenv()
     api_token = os.getenv("HF_API_TOKEN")
-    model_id = os.getenv("HF_MODEL_ID")
+    hf_model_id = os.getenv("HF_MODEL_ID")
+    openai_api_key = os.getenv("OPENAI_API_KEY")
+    video_generation_provider = os.getenv("VIDEO_GENERATION_PROVIDER", "HUGGING_FACE").upper()
 
-    if not api_token:
-        raise RuntimeError("HF_API_TOKEN is not set. Create a .env file or set env vars.")
-    if not model_id:
-        raise RuntimeError("HF_MODEL_ID is not set. Create a .env file or set env vars.")
+    if video_generation_provider == "HUGGING_FACE":
+        if not api_token:
+            raise RuntimeError("HF_API_TOKEN is not set for Hugging Face provider.")
+        if not hf_model_id:
+            raise RuntimeError("HF_MODEL_ID is not set for Hugging Face provider.")
+    elif video_generation_provider == "OPENAI":
+        if not openai_api_key:
+            raise RuntimeError("OPENAI_API_KEY is not set for OpenAI provider.")
+    else:
+        raise RuntimeError(f"Unknown VIDEO_GENERATION_PROVIDER: {video_generation_provider}. Must be HUGGING_FACE or OPENAI.")
 
-    return api_token, model_id
+    return api_token, hf_model_id, openai_api_key, video_generation_provider
 
 
-def generate_video_from_image(image_path: Path, prompt: str, output_path: Path):
+def _generate_with_hugging_face(image_path: Path, prompt: str, output_path: Path, api_token: str, model_id: str):
     """
     Call the Hugging Face Inference API for an image-to-video / avatar model.
-    This is provider-agnostic; adjust payload according to the chosen model docs.
     """
-    api_token, model_id = load_config()
-
     api_url = f"https://api-inference.huggingface.co/models/{model_id}"
 
     with image_path.open("rb") as f:
         image_bytes = f.read()
 
-    # Many HF image/video models accept raw binary or base64 in the payload.
-    # Here we send binary image plus a JSON header for prompt; you may need to
-    # adjust based on the specific model's README.
     headers = {
         "Authorization": f"Bearer {api_token}",
     }
 
-    # Example for binary image + JSON options query string
     params = {
         "prompt": prompt,
     }
@@ -54,23 +55,46 @@ def generate_video_from_image(image_path: Path, prompt: str, output_path: Path):
     if response.status_code != 200:
         raise RuntimeError(f"HF Inference API error {response.status_code}: {response.text}")
 
-    # Some models return raw video bytes, others return JSON with a URL.
     content_type = response.headers.get("Content-Type", "")
     if "application/json" in content_type:
         data = response.json()
-        # Look for a common field where video URL might be stored
         video_url = data.get("video", {}).get("url") or data.get("output", data)
         print("Model returned JSON response:")
         print(data)
         print("If a video URL is present above, download it manually or extend this script.")
         return
 
-    # Assume binary video content (e.g. mp4/gif/webm)
     output_path.parent.mkdir(parents=True, exist_ok=True)
     with output_path.open("wb") as f:
         f.write(response.content)
 
     print(f"Saved generated video to: {output_path}")
+
+
+def _generate_with_openai(image_path: Path, prompt: str, output_path: Path, openai_api_key: str):
+    """
+    Placeholder for calling the OpenAI video generation API.
+    """
+    # TODO: Implement actual OpenAI video generation logic here.
+    # This will involve using the OpenAI Python client library.
+    # Example (conceptual):
+    # from openai import OpenAI
+    # client = OpenAI(api_key=openai_api_key)
+    # response = client.video.generate(image=image_path, prompt=prompt, ...)
+    # Handle response to save video to output_path.
+    raise NotImplementedError("OpenAI video generation not yet implemented.")
+
+
+def generate_avatar_video(image_path: Path, prompt: str, output_path: Path):
+    """
+    Call the appropriate video generation API based on the configured provider.
+    """
+    api_token, hf_model_id, openai_api_key, video_generation_provider = load_config()
+
+    if video_generation_provider == "HUGGING_FACE":
+        _generate_with_hugging_face(image_path, prompt, output_path, api_token, hf_model_id)
+    elif video_generation_provider == "OPENAI":
+        _generate_with_openai(image_path, prompt, output_path, openai_api_key)
 
 
 def parse_args():

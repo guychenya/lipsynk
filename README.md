@@ -18,16 +18,24 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-### 2. Configure Hugging Face Inference
+### 2. Configuration
 
 1. Create an account on Hugging Face and generate an **API token** with Inference scope.
-2. Pick a suitable **image-to-video / avatar** model that offers Inference API access  
+2. Pick a suitable **image-to-video / avatar** model that offers Inference API access
    (for example, a talking-head or image-to-video model from the Hub).
-3. Copy `.env.example` to `.env` and set:
+3. If using OpenAI, obtain an **API key** from your OpenAI account.
+4. Copy `.env.example` to `.env` and set the following variables:
 
 ```bash
+# Required for Hugging Face video generation
 HF_API_TOKEN=your_hf_api_token_here
 HF_MODEL_ID=your-model-id-here   # e.g. author/model-name
+
+# Required for OpenAI video generation
+OPENAI_API_KEY=your_openai_api_key_here
+
+# Choose your video generation provider: HUGGING_FACE or OPENAI
+VIDEO_GENERATION_PROVIDER=HUGGING_FACE
 ```
 
 You can also export them directly in your shell instead of using `.env`.
