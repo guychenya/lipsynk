@@ -46,6 +46,9 @@ build/
 
 # Dependencies
 /node_modules
+frontend/node_modules/
+backend/node_modules/
+backend/__pycache__/
+backend/*.pyc
 
 # Project specific
-educational-platform/
