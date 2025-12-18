@@ -73,3 +73,9 @@ The API will return either the generated video file directly or a JSON response 
 *   **Output:** The system handles two types of responses from the Hugging Face API: direct binary video content and JSON containing a video URL.
 
 **Note**: If you had previously set up a virtual environment with the old project name, please re-create it by deleting the `.venv` folder and following the setup instructions again to ensure all paths are updated correctly.
+
+---
+
+## Archival Note
+
+This project has been archived as it does not currently support the user's expected functionality. This note serves as a checkpoint for future reference.
