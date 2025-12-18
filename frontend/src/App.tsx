@@ -18,6 +18,9 @@ function App() {
   const courseId = import.meta.env.VITE_COURSE_ID || '';
   const token = import.meta.env.VITE_AUTH_TOKEN || '';
 
+  // API base URL, configurable via environment variable
+  const apiBaseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000';
+
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -33,7 +36,7 @@ function App() {
     setInput('');
 
     try {
-      const response = await fetch(`http://localhost:3000/courses/${courseId}/query`, {
+      const response = await fetch(`${apiBaseUrl}/courses/${courseId}/query`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
