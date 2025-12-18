@@ -13,9 +13,10 @@ function App() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState<string>('');
   // In a production application, courseId and token would typically be
-  // managed more securely (e.g., environment variables, authentication context).
-  const [courseId, setCourseId] = useState<string>('');
-  const [token, setToken] = useState<string>('');
+  // sourced from environment variables or an authentication context.
+  // For development, ensure VITE_COURSE_ID and VITE_AUTH_TOKEN are set in your .env file.
+  const courseId = import.meta.env.VITE_COURSE_ID || '';
+  const token = import.meta.env.VITE_AUTH_TOKEN || '';
 
 
   const handleSubmit = async (e: FormEvent) => {
