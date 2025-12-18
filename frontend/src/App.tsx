@@ -12,6 +12,8 @@ interface Message {
 function App() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState<string>('');
+  const [courseId, setCourseId] = useState<string>('');
+  const [token, setToken] = useState<string>('');
 
 
   const handleSubmit = async (e: FormEvent) => {
