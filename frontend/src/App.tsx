@@ -12,6 +12,8 @@ interface Message {
 function App() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState<string>('');
+  // In a production application, courseId and token would typically be
+  // managed more securely (e.g., environment variables, authentication context).
   const [courseId, setCourseId] = useState<string>('');
   const [token, setToken] = useState<string>('');
 
