@@ -1,4 +1,4 @@
-import { useState, FormEvent } from 'react';
+import { useState, type FormEvent } from 'react';
 import './App.css';
 
 interface Message {
@@ -12,8 +12,7 @@ interface Message {
 function App() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState<string>('');
-  const [courseId, setCourseId] = useState<string>('course-123'); // Default course ID for MVP
-  const [token, setToken] = useState<string>('dummy-token'); // Dummy token for MVP
+
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
